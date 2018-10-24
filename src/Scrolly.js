@@ -127,8 +127,7 @@ export default {
       const className = bar.className;
         if (typeof className == 'object' && !className.match('scrolly-bar')) {
 
-        }
-        else{
+        }else{
             let scrollLayout = {};
 
             const self = this;
@@ -141,7 +140,6 @@ export default {
             const initialBarLeft = bar.offsetLeft;
 
             self.isScrolling = true;
-
             function onMouseMove(event) {
                 // Prevents text selection
                 event.preventDefault();
@@ -272,17 +270,17 @@ export default {
 
                 // Emit scrollchange event
                 self.$emit('scrollchange', scrollLayout);
+            }
+
+            function onMouseUp() {
+                self.isScrolling = false;
+                removeEventListener(MOUSE_UP_EVENT, onMouseUp);
+                removeEventListener(MOUSE_MOVE_EVENT, onMouseMove);
+            }
+
+            addEventListener('mousemove', onMouseMove);
+            addEventListener('mouseup', onMouseUp);
         }
-      }
-
-      function onMouseUp() {
-        self.isScrolling = false;
-        removeEventListener(MOUSE_UP_EVENT, onMouseUp);
-        removeEventListener(MOUSE_MOVE_EVENT, onMouseMove);
-      }
-
-      addEventListener('mousemove', onMouseMove);
-      addEventListener('mouseup', onMouseUp);
     },
 
     onMouseWheel(event) {

@@ -754,23 +754,23 @@ var __vue_module__ = {
       var className = bar.className;
         if (typeof className == 'object' && !className.match('scrolly-bar')) {
 
-        }
-        else{
+        }else{
             var scrollLayout = {};
 
-            var self$1 = this;
+            var self = this;
             var ref$1 = this;
             var barX = ref$1.barX;
             var barY = ref$1.barY;
             var ref$2 = this;
             var viewport = ref$2.viewport;
+            var addEventListener = window.addEventListener;
+            var removeEventListener = window.removeEventListener;
             var isAxisX = className.match('axis-x');
             var isAxisY = className.match('axis-y');
             var initialBarTop = bar.offsetTop;
             var initialBarLeft = bar.offsetLeft;
 
-            self$1.isScrolling = true;
-
+            self.isScrolling = true;
             function onMouseMove(event) {
                 // Prevents text selection
                 event.preventDefault();
@@ -894,18 +894,18 @@ var __vue_module__ = {
                 }
 
                 // Emit scrollchange event
-                self$1.$emit('scrollchange', scrollLayout);
+                self.$emit('scrollchange', scrollLayout);
+            }
+
+            function onMouseUp() {
+                self.isScrolling = false;
+                removeEventListener(MOUSE_UP_EVENT, onMouseUp);
+                removeEventListener(MOUSE_MOVE_EVENT, onMouseMove);
+            }
+
+            addEventListener('mousemove', onMouseMove);
+            addEventListener('mouseup', onMouseUp);
         }
-      }
-
-      function onMouseUp() {
-        self.isScrolling = false;
-        removeEventListener(MOUSE_UP_EVENT, onMouseUp);
-        removeEventListener(MOUSE_MOVE_EVENT, onMouseMove);
-      }
-
-      addEventListener('mousemove', onMouseMove);
-      addEventListener('mouseup', onMouseUp);
     },
 
     onMouseWheel: function onMouseWheel(event) {
