@@ -752,7 +752,7 @@ var __vue_module__ = {
       var initialPageY = ref.pageY;
 
       var className = bar.className;
-        if (typeof className == 'object' && !className.match('scrolly-bar')) {
+        if (typeof className == 'object' || !className.match('scrolly-bar')) {
 
         }else{
             var scrollLayout = {};

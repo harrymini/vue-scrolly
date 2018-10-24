@@ -125,7 +125,7 @@ export default {
 
     onMouseDown({ target: bar, pageX: initialPageX, pageY: initialPageY }) {
       const className = bar.className;
-        if (typeof className == 'object' && !className.match('scrolly-bar')) {
+        if (typeof className == 'object' || !className.match('scrolly-bar')) {
 
         }else{
             let scrollLayout = {};
