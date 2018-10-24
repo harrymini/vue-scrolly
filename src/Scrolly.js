@@ -125,152 +125,154 @@ export default {
 
     onMouseDown({ target: bar, pageX: initialPageX, pageY: initialPageY }) {
       const className = bar.className;
-      if (typeof className == 'object' ) return;
-      if (!className.match('scrolly-bar')) return;
+        if (typeof className == 'object' && !className.match('scrolly-bar')) {
 
-      let scrollLayout = {};
-
-      const self = this;
-      const { barX, barY } = this;
-      const { container, viewport } = this;
-      const { addEventListener, removeEventListener } = window;
-      const isAxisX = className.match('axis-x');
-      const isAxisY = className.match('axis-y');
-      const initialBarTop = bar.offsetTop;
-      const initialBarLeft = bar.offsetLeft;
-
-      self.isScrolling = true;
-
-      function onMouseMove(event) {
-        // Prevents text selection
-        event.preventDefault();
-
-        // Get current cursor position
-        const { pageX, pageY } = event;
-
-        if (isAxisX) {
-          // Get viewport dimension and scroll position
-          const {
-            scrollLeft,
-            scrollWidth,
-            offsetWidth: viewportWidth,
-          } = viewport;
-
-          // Get computed bar width where the browser already
-          // took account of min-width/max-width constraints.
-          const barWidth = bar.offsetWidth;
-
-          // Determine min/max bar position
-          const minBarLeft = 0;
-          const maxBarLeft = viewportWidth - barWidth;
-
-          // Calculate new bar position
-          let dx = pageX - initialPageX;
-          let barLeft = initialBarLeft + dx;
-          barLeft < minBarLeft && (barLeft = minBarLeft);
-          barLeft > maxBarLeft && (barLeft = maxBarLeft);
-
-          // Set scrollbar position
-          bar.style.left = toPercent(barLeft / viewportWidth);
-
-          // From the new scrollbar position,
-          // set the new viewport scroll position.
-          viewport.scrollLeft =
-            barLeft / maxBarLeft * (scrollWidth - viewportWidth);
-
-          // Determine if new bar position is on edge
-          let onLeftEdge = barLeft < minBarLeft;
-          let onRightEdge = barLeft > maxBarLeft;
-          let onEdge = onLeftEdge || onRightEdge;
-
-          // Determine other scroll layout properties
-          let visible = true;
-          let canUnlockParentScroll = false;
-          let canScrollParent = false;
-          let scrolled = true;
-
-          // Create scroll layout
-          scrollLayout.x = barX.scrollLayout = {
-            barX,
-            scrollLeft,
-            scrollWidth,
-            viewportWidth,
-            barWidth,
-            barLeft,
-            minBarLeft,
-            maxBarLeft,
-            visible,
-            onLeftEdge,
-            onRightEdge,
-            onEdge,
-            canUnlockParentScroll,
-            canScrollParent,
-          };
         }
+        else{
+            let scrollLayout = {};
 
-        if (isAxisY) {
-          // Get viewport dimension and scroll position
-          const {
-            scrollTop,
-            scrollHeight,
-            offsetHeight: viewportHeight,
-          } = viewport;
+            const self = this;
+            const { barX, barY } = this;
+            const { container, viewport } = this;
+            const { addEventListener, removeEventListener } = window;
+            const isAxisX = className.match('axis-x');
+            const isAxisY = className.match('axis-y');
+            const initialBarTop = bar.offsetTop;
+            const initialBarLeft = bar.offsetLeft;
 
-          // Get computed bar height where the browser already
-          // took account of min-height/max-height constraints.
-          const barHeight = bar.offsetHeight;
+            self.isScrolling = true;
 
-          // Determine min/max bar position
-          const minBarTop = 0;
-          const maxBarTop = viewportHeight - barHeight;
+            function onMouseMove(event) {
+                // Prevents text selection
+                event.preventDefault();
 
-          // Calculate new bar position
-          let dy = pageY - initialPageY;
-          let barTop = initialBarTop + dy;
-          barTop < minBarTop && (barTop = minBarTop);
-          barTop > maxBarTop && (barTop = maxBarTop);
+                // Get current cursor position
+                const { pageX, pageY } = event;
 
-          // Set scrollbar position
-          bar.style.top = toPercent(barTop / viewportHeight);
+                if (isAxisX) {
+                    // Get viewport dimension and scroll position
+                    const {
+                        scrollLeft,
+                        scrollWidth,
+                        offsetWidth: viewportWidth,
+                    } = viewport;
 
-          // From the new scrollbar position,
-          // set the new viewport scroll position.
-          viewport.scrollTop =
-            barTop / maxBarTop * (scrollHeight - viewportHeight);
+                    // Get computed bar width where the browser already
+                    // took account of min-width/max-width constraints.
+                    const barWidth = bar.offsetWidth;
 
-          // Determine if new bar position is on edge
-          let onTopEdge = barTop <= minBarTop;
-          let onBottomEdge = barTop >= maxBarTop;
-          let onEdge = onTopEdge || onBottomEdge;
+                    // Determine min/max bar position
+                    const minBarLeft = 0;
+                    const maxBarLeft = viewportWidth - barWidth;
 
-          // Determine other scroll layout properties
-          let visible = true;
-          let canUnlockParentScroll = false;
-          let canScrollParent = false;
-          let scrolled = true;
+                    // Calculate new bar position
+                    let dx = pageX - initialPageX;
+                    let barLeft = initialBarLeft + dx;
+                    barLeft < minBarLeft && (barLeft = minBarLeft);
+                    barLeft > maxBarLeft && (barLeft = maxBarLeft);
 
-          // Create scroll layout
-          scrollLayout.y = barY.scrollLayout = {
-            barY,
-            scrollTop,
-            scrollHeight,
-            viewportHeight,
-            barHeight,
-            barTop,
-            minBarTop,
-            maxBarTop,
-            onTopEdge,
-            onBottomEdge,
-            onEdge,
-            visible,
-            canUnlockParentScroll,
-            canScrollParent,
-            scrolled,
-          };
+                    // Set scrollbar position
+                    bar.style.left = toPercent(barLeft / viewportWidth);
+
+                    // From the new scrollbar position,
+                    // set the new viewport scroll position.
+                    viewport.scrollLeft =
+                        barLeft / maxBarLeft * (scrollWidth - viewportWidth);
+
+                    // Determine if new bar position is on edge
+                    let onLeftEdge = barLeft < minBarLeft;
+                    let onRightEdge = barLeft > maxBarLeft;
+                    let onEdge = onLeftEdge || onRightEdge;
+
+                    // Determine other scroll layout properties
+                    let visible = true;
+                    let canUnlockParentScroll = false;
+                    let canScrollParent = false;
+                    let scrolled = true;
+
+                    // Create scroll layout
+                    scrollLayout.x = barX.scrollLayout = {
+                        barX,
+                        scrollLeft,
+                        scrollWidth,
+                        viewportWidth,
+                        barWidth,
+                        barLeft,
+                        minBarLeft,
+                        maxBarLeft,
+                        visible,
+                        onLeftEdge,
+                        onRightEdge,
+                        onEdge,
+                        canUnlockParentScroll,
+                        canScrollParent,
+                    };
+                }
+
+                if (isAxisY) {
+                    // Get viewport dimension and scroll position
+                    const {
+                        scrollTop,
+                        scrollHeight,
+                        offsetHeight: viewportHeight,
+                    } = viewport;
+
+                    // Get computed bar height where the browser already
+                    // took account of min-height/max-height constraints.
+                    const barHeight = bar.offsetHeight;
+
+                    // Determine min/max bar position
+                    const minBarTop = 0;
+                    const maxBarTop = viewportHeight - barHeight;
+
+                    // Calculate new bar position
+                    let dy = pageY - initialPageY;
+                    let barTop = initialBarTop + dy;
+                    barTop < minBarTop && (barTop = minBarTop);
+                    barTop > maxBarTop && (barTop = maxBarTop);
+
+                    // Set scrollbar position
+                    bar.style.top = toPercent(barTop / viewportHeight);
+
+                    // From the new scrollbar position,
+                    // set the new viewport scroll position.
+                    viewport.scrollTop =
+                        barTop / maxBarTop * (scrollHeight - viewportHeight);
+
+                    // Determine if new bar position is on edge
+                    let onTopEdge = barTop <= minBarTop;
+                    let onBottomEdge = barTop >= maxBarTop;
+                    let onEdge = onTopEdge || onBottomEdge;
+
+                    // Determine other scroll layout properties
+                    let visible = true;
+                    let canUnlockParentScroll = false;
+                    let canScrollParent = false;
+                    let scrolled = true;
+
+                    // Create scroll layout
+                    scrollLayout.y = barY.scrollLayout = {
+                        barY,
+                        scrollTop,
+                        scrollHeight,
+                        viewportHeight,
+                        barHeight,
+                        barTop,
+                        minBarTop,
+                        maxBarTop,
+                        onTopEdge,
+                        onBottomEdge,
+                        onEdge,
+                        visible,
+                        canUnlockParentScroll,
+                        canScrollParent,
+                        scrolled,
+                    };
+                }
+
+                // Emit scrollchange event
+                self.$emit('scrollchange', scrollLayout);
         }
-
-        // Emit scrollchange event
-        self.$emit('scrollchange', scrollLayout);
       }
 
       function onMouseUp() {
